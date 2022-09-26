@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class App {
   public static void main(String[] args) throws IOException {
 
-    IPAddress[] arr = IPAddress.LoadFromFile(1000000, "c:\\IP-COUNTRY-REGION-CITY-SHUFFLED.csv");
+    IPAddress[] arr = IPAddress.LoadFromFile(4000000, "c:\\IP-COUNTRY-REGION-CITY-SHUFFLED.csv");    
     Scanner scanner = new Scanner(System.in);  // Create a Scanner object
     System.out.println(
     		"1. Heap sort \n"+
@@ -32,5 +32,7 @@ public class App {
     	}
     }
     System.out.println("Sorted : "+sorted + "\nFaulty index : " + faultyindex);
+    
+    System.out.println(IPAddress.binarySeach(arr, "188.58.33.04"));
   }
 }

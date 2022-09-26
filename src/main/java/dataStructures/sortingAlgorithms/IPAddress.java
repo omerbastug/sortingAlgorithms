@@ -117,16 +117,54 @@ public class IPAddress implements Comparable<IPAddress> {
 		fw.close();
 	}
 	
-//	public static void RadixSort_and_Write(IPAddress[] addresses) throws IOException {
-//		Radixsort rad = new Radixsort();
-//		ArrayList<IPAddress> sorted = rad.sort(addresses);;
-//		File file = new File("C:\\DSlab3\\newCSV.csv");
-//		FileWriter fw = new FileWriter(file);
-//		for(int i = 0; i < sorted.size() ; i++) {
-//			fw.write(sorted.get(i).toString());
-//		}
-//		fw.close();
-//	}
+	public static String binarySeach(IPAddress[] addresses,String ip) {
+		int index = 0;
+		String[] convert = ip.split("\\.");
+		long ipadd;
+		ipadd = Long.parseLong(convert[0])*16777216 + Long.parseLong(convert[1])*65536 + 
+				Long.parseLong(convert[2])*256 + Long.parseLong(convert[3]);
+		//System.out.println(ipadd);
+		boolean sorted = true;
+	    for(int i = 0;i <addresses.length-1;i++) {
+	    	if(addresses[i].compareTo(addresses[i+1])==1) {
+	    		sorted = false;
+	    		break;
+	    	}
+	    }
+	    if(!sorted){
+		QuickSort.sort(addresses);
+		}
+		
+		int low=0;
+		int high = addresses.length;
+		
+		boolean found = false;
+		int i = 0;
+		int limit = (int)(Math.log(high) / Math.log(2));
+		
+		while(i<=limit ){
+			i++;
+			int mid = (high + low)/2;
+			//System.out.println(mid);
+			if(addresses[mid].ipTo >= ipadd && addresses[mid].ipfrom<=ipadd) {
+				found = true;
+				index = mid;
+				break;
+			}
+			if (addresses[mid].ipfrom > ipadd) {
+				high = mid - 1;
+			} else if (addresses[mid].ipfrom < ipadd) {
+				low = mid + 1;
+			}
+		}
+
+		if(found) {
+			return addresses[index].geo();
+		} else {
+			return "IP not found";
+		}
+	}
+	
 	public long getIp() {
 		return this.ipfrom;
 	}
